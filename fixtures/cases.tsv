@@ -1,0 +1,31 @@
+# id	kind	path (TSV escapes)	hand_pre	hand_post	hand_post2
+# hand_*: verdict with upstream U1 (one decode), derived by hand from the three versions of _sanitize_proxy_path
+p01_double_dots	pos	%252e%252e/admin	ESCAPES	REJECTED	REJECTED
+p02_double_dots_upper	pos	%252E%252E/admin	ESCAPES	REJECTED	REJECTED
+p03_mid_path	pos	a/%252e%252e/%252e%252e/admin	ESCAPES	REJECTED	REJECTED
+p04_double_slash_too	pos	%252e%252e%252fadmin	ESCAPES	REJECTED	REJECTED
+p05_percent_built	pos	%%32%65%%32%65/admin	ESCAPES	REJECTED	REJECTED
+p06_depth9_dots	pos	%25252525252525252e%25252525252525252e/%25252525252525252e%25252525252525252e/admin	IN_SCOPE	ESCAPES	REJECTED
+p07_depth9_dots_slash	pos	%25252525252525252e%25252525252525252e%25252525252525252fadmin	IN_SCOPE	ESCAPES	REJECTED
+n01_plain	neg	files/report.txt	IN_SCOPE	IN_SCOPE	IN_SCOPE
+n02_space	neg	my%20docs/a.txt	IN_SCOPE	IN_SCOPE	IN_SCOPE
+n03_single_enc	neg	%2e%2e/admin	REJECTED	REJECTED	REJECTED
+n04_literal	neg	../admin	REJECTED	REJECTED	REJECTED
+n05_enc_slash	neg	..%2fadmin	REJECTED	REJECTED	REJECTED
+n06_inner_dotdot	neg	a/b/../c	IN_SCOPE	IN_SCOPE	IN_SCOPE
+n07_absolute	neg	/etc/passwd	IN_SCOPE	IN_SCOPE	IN_SCOPE
+n08_literal_percent	neg	100%25.txt	IN_SCOPE	IN_SCOPE	IN_SCOPE
+n09_trailing_slash	neg	dir/sub/	IN_SCOPE	IN_SCOPE	IN_SCOPE
+n10_climb_after_clean	neg	x/%2e%2e/%2e%2e/admin	REJECTED	REJECTED	REJECTED
+e01_depth3	edge	%25252e%25252e/admin	IN_SCOPE	REJECTED	REJECTED
+e02_depth8	edge	%252525252525252e%252525252525252e/admin	IN_SCOPE	REJECTED	REJECTED
+e03_empty	edge		REJECTED	REJECTED	REJECTED
+e04_dotdot_name	edge	..hidden/x	REJECTED	REJECTED	REJECTED
+e05_dot_slash	edge	./	REJECTED	REJECTED	REJECTED
+e06_root	edge	/	IN_SCOPE	IN_SCOPE	IN_SCOPE
+e07_bad_hex	edge	%zz/%2	IN_SCOPE	IN_SCOPE	IN_SCOPE
+e08_overdecode	edge	a%2541	IN_SCOPE	IN_SCOPE	IN_SCOPE
+e09_two_slashes	edge	//x	IN_SCOPE	IN_SCOPE	IN_SCOPE
+b01_nul	bad	%00	BAD_INPUT	BAD_INPUT	BAD_INPUT
+b02_non_ascii	bad	%c3%a9	BAD_INPUT	BAD_INPUT	BAD_INPUT
+b03_nested_nul	bad	%2500	BAD_INPUT	BAD_INPUT	BAD_INPUT
